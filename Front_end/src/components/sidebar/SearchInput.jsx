@@ -1,24 +1,37 @@
-import { IoSearchSharp } from "react-icons/io5";
-
-const SearchInput = () => {
-	return (
-		<form className='flex items-center gap-2'>
-			<input type='text' placeholder='Search…' className='input input-bordered rounded-full' />
-			<button type='submit' className='btn btn-circle bg-sky-500 text-white'>
-				<IoSearchSharp className='w-6 h-6 outline-none' />
-			</button>
-		</form>
-	);
-};
-export default SearchInput;
-
-// STARTER CODE SNIPPET
+// import { useState } from "react";
 // import { IoSearchSharp } from "react-icons/io5";
+// import useConversation from "../../zustand/useConversation";
+// import toast from "react-hot-toast";
+// import useGetConversations from "../../hooks/useGetConversations";
 
 // const SearchInput = () => {
+// 	const [search, setSearch] = useState("");
+// 	const { setSelectedConversation } = useConversation();
+// 	const { conversations } = useGetConversations();
+
+// 	const handleSubmit = (e) => {
+// 		e.preventDefault();
+// 		if (!search) return;
+// 		if (search.length < 3) {
+// 			return toast.error("Search term must be at least 3 characters long");
+// 		}
+
+// 		const conversation = conversations.find((c) => c.fullName.toLowerCase().includes(search.toLowerCase()));
+
+// 		if (conversation) {
+// 			setSelectedConversation(conversation);
+// 			setSearch("");
+// 		} else toast.error("No such user found!");
+// 	};
 // 	return (
-// 		<form className='flex items-center gap-2'>
-// 			<input type='text' placeholder='Search…' className='input input-bordered rounded-full' />
+// 		<form onSubmit={handleSubmit} className='flex items-center gap-2'>
+// 			<input
+// 				type='text'
+// 				placeholder='Search…'
+// 				className='input input-bordered rounded-full'
+// 				value={search}
+// 				onChange={(e) => setSearch(e.target.value)}
+// 			/>
 // 			<button type='submit' className='btn btn-circle bg-sky-500 text-white'>
 // 				<IoSearchSharp className='w-6 h-6 outline-none' />
 // 			</button>
@@ -26,3 +39,66 @@ export default SearchInput;
 // 	);
 // };
 // export default SearchInput;
+
+// // STARTER CODE SNIPPET
+// // import { IoSearchSharp } from "react-icons/io5";
+
+// // const SearchInput = () => {
+// // 	return (
+// // 		<form className='flex items-center gap-2'>
+// // 			<input type='text' placeholder='Search…' className='input input-bordered rounded-full' />
+// // 			<button type='submit' className='btn btn-circle bg-sky-500 text-white'>
+// // 				<IoSearchSharp className='w-6 h-6 outline-none' />
+// // 			</button>
+// // 		</form>
+// // 	);
+// // };
+// // export default SearchInput;
+
+
+import { useState } from "react";
+import { IoSearchSharp } from "react-icons/io5";
+import useConversation from "../../zustand/useConversation";
+import toast from "react-hot-toast";
+import useGetConversations from "../../hooks/useGetConversations";
+
+const SearchInput = () => {
+	const [search, setSearch] = useState("");
+	const { setSelectedConversation } = useConversation();
+	const { conversations } = useGetConversations();
+
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		if (!search) return;
+		if (search.length < 3) {
+			return toast.error("Search term must be at least 3 characters long");
+		}
+
+		const conversation = conversations.find((c) => 
+			c.fullName.toLowerCase().includes(search.toLowerCase())
+		);
+
+		if (conversation) {
+			setSelectedConversation(conversation);
+			setSearch("");
+		} else {
+			toast.error("No such user found!");
+		}
+	};
+
+	return (
+		<div className='p-4 border-b border-gray-300'>
+			<form onSubmit={handleSubmit} className='relative'>
+				<IoSearchSharp className='absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400' />
+				<input
+					type='text'
+					placeholder='Search conversations...'
+					className='w-full pl-10 pr-4 py-2 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+					value={search}
+					onChange={(e) => setSearch(e.target.value)}
+				/>
+			</form>
+		</div>
+	);
+};
+export default SearchInput;
